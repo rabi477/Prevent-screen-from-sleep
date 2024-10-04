@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="checkbox" name="" id="prevLock" />
+    <label for="prevLock" id="statusPrevLock">Wakelock Released</label>
+
+    <script>
+
+    let wakeLock = null;
+    async function myFun(){
+      try
+        {
+            wakeLock = await navigator.wakeLock.request("screen");
+            console.log(wakeLock);
+        }
+        catch (err) {
+            // the wake lock request fails - usually system related, such being low on battery
+            console.log(`${err.name}, ${err.message}`);
+        }
+    }
+
+    let prevLockCheckbox = document.querySelector("#prevLock");
+    let statusPrevLock = document.querySelector("#statusPrevLock");
+
+    prevLockCheckbox.addEventListener("change",()=>{
+        if(prevLockCheckbox.checked){
+            myFun();
+            statusPrevLock.innerHTML = "Wakelock Active";
+        }else{
+            wakeLock.release();
+            console.log(wakeLock); 
+            statusPrevLock.innerHTML = "Wakelock Released";
+        }
+    });
+    
+
+        
+    
+    </script>
+  </body>
+</html>
